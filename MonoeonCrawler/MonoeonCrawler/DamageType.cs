@@ -1,6 +1,6 @@
 ﻿namespace MonoeonCrawler
 {
-    public enum Type
+    public enum DamageType
     {
         Physical,
         Magical

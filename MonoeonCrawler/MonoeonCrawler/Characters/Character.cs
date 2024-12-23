@@ -5,18 +5,23 @@ using MonoeonCrawler.Abilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace MonoeonCrawler.Characters
 {
     public class Character
     {
         protected List<Ability> selectedAbilities;
+        public Texture2D IdleTexture { get; protected set; }
+        public Texture2D WalkingTexture { get; protected set; }
 
-        private List<Texture2D> walkingFrames;
-        private List<Texture2D> idleFrames;
+        public const int runningFrameWidth = 320;
+        public const int idleFrameWidth = 160;
+        public const int idleCharacterWidth = 125;
+        public const int runningCharacterWidth = 130;
         private double animationTimer;
-        private double frameTime = 0.1; // Time per frame in seconds
-        private int currentFrame;
+        private double frameTime = 0.25; // Time per frame in seconds
+        public int CurrentFrame { get; protected set; }
         private bool isWalking;
 
         protected ContentManager content;
@@ -63,11 +68,19 @@ namespace MonoeonCrawler.Characters
             return Math.Pow(Level / 0.07, 2);
         }
 
+        public double GetCharacterWidth()
+        {
+            return isWalking ? runningCharacterWidth : idleCharacterWidth;
+        }
+
+        public double GetFrameWidth()
+        {
+            return isWalking ? runningFrameWidth : idleFrameWidth;
+        }
+
 
         public Character(string name, string description, int maxHealth, int physicalDamage, int magicDamage, int maxMana, ContentManager content)
         {
-            walkingFrames = new List<Texture2D>();
-            idleFrames = new List<Texture2D>();
             this.content = content;
             Name = name;
             Description = description;
@@ -79,18 +92,8 @@ namespace MonoeonCrawler.Characters
             Mana = MaxMana;
             Experience = 0;
             MaxExperience = MaxExperienceFormula();
-
-            //// Load walking frames
-            //for (int i = 0; i < 6; i++) 
-            //{
-            //    walkingFrames.Add(content.Load<Texture2D>($"Heroes/{name}/Run/{name}-running-{i}"));
-            //}
-
-            // Load idle frames
-            for (int i = 0; i < 4; i++)
-            {
-                idleFrames.Add(content.Load<Texture2D>($"Heroes/{name}/Idle/{name}-idle-{i}"));
-            }
+            IdleTexture = content.Load<Texture2D>($"Heroes/{Name}/Idle/Idle-Sheet");
+            WalkingTexture = content.Load<Texture2D>($"Heroes/{Name}/Run/Run-Sheet");
         }
 
         public void SetWalking(bool walking)
@@ -98,7 +101,7 @@ namespace MonoeonCrawler.Characters
             if (isWalking != walking)
             {
                 isWalking = walking;
-                currentFrame = 0;
+                CurrentFrame = 0;
                 animationTimer = 0;
             }
         }
@@ -110,25 +113,25 @@ namespace MonoeonCrawler.Characters
 
             if (animationTimer >= frameTime)
             {
-                currentFrame++;
+                CurrentFrame++;
                 animationTimer -= frameTime;
 
                 // Loop animation frames
                 if (isWalking)
                 {
-                    currentFrame %= walkingFrames.Count;
+                    CurrentFrame %= 6;
                 }
                 else
                 {
-                    currentFrame %= idleFrames.Count;
+                    CurrentFrame %= 4;
                 }
             }
         }
 
-        public Texture2D GetCurrentFrame()
+        public Texture2D GetCurrentTexture()
         {
-            Debug.WriteLine(currentFrame);
-            return isWalking ? walkingFrames[currentFrame] : idleFrames[currentFrame];
+            Debug.WriteLine(CurrentFrame);
+            return isWalking ? WalkingTexture : IdleTexture;
         }
 
         public bool CanLevelUp()
@@ -141,6 +144,7 @@ namespace MonoeonCrawler.Characters
             Level++;
             MaxExperience = MaxExperienceFormula();
         }
+
     }
 }
 

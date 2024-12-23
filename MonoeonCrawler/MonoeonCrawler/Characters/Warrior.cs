@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace MonoeonCrawler.Characters
 {
-    public class Warrior : Character
+    public class Knight : Character
     {
-        public Warrior(ContentManager content)
-            : base(name: "Warrior", description: "", maxHealth: 150, physicalDamage: 10, magicDamage: 0, maxMana: 50, content)
+        public Knight(ContentManager content)
+            : base(name: "Knight", description: "", maxHealth: 150, physicalDamage: 10, magicDamage: 0, maxMana: 50, content)
         {
-            content.Load<Texture2D>("Heroes/Warior/Idle/warrior-idle0.png");
+
         }
 
         public override void LevelUp()

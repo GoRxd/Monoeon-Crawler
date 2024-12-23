@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoeonCrawler.Characters;
+using MonoeonCrawler.GameObjects;
+using System.Collections.Generic;
 
 namespace MonoeonCrawler
 {
@@ -10,6 +12,7 @@ namespace MonoeonCrawler
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Player player;
+        private List<GameObject> gameObjects;
 
         public Game1()
         {
@@ -21,14 +24,15 @@ namespace MonoeonCrawler
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player("Test Player", new Vector2(0, 0), new Mage(Content));
+            gameObjects = new();
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+            player = new Player("Test Player", new Vector2(0, 0), new Mage(Content));
+            gameObjects.Add(new Table(Vector2.Zero, Content));
             // TODO: use this.Content to load your game content here
         }
 
@@ -52,39 +56,40 @@ namespace MonoeonCrawler
             base.Update(gameTime);
         }
 
+        private void DrawGameObjects()
+        {
+            foreach (var gameObject in gameObjects)
+            {
+                gameObject.Draw(_spriteBatch);
+            }
+        }
 
+        private void HandleCollisions()
+        {
+            foreach (var objectA in gameObjects)
+            {
+                foreach (var objectB in gameObjects)
+                {
+                    if (objectA != objectB)
+                    {
+                        if (objectA.GetRectangle().Intersects(objectB.GetRectangle()))
+                        {
+                            objectA.OnCollision(objectB);
+                        }
+                    }
+                }
+            }
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin();
 
-            Texture2D tableTexture = Content.Load<Texture2D>("table");
-            _spriteBatch.Draw(tableTexture, new Rectangle(0, 0, tableTexture.Width, tableTexture.Height), Color.White);
+            DrawGameObjects();
 
-            // Get the current frame of the character's animation
-            Texture2D currentFrame = player.Character.GetCurrentFrame();
-
-            // Calculate the vertical alignment offset
-            // Align the frames to a fixed Y position (e.g., the character's feet or base level)
-            float yOffset = player.Position.Y + (currentFrame.Height - currentFrame.Height); // Adjust based on frame height
-
-            // Ensure the frame is flipped horizontally if the character is facing left
-            SpriteEffects spriteEffect = player.FacingRight ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
-            // Draw the character frame at the correct position, adjusting for any size differences
-            _spriteBatch.Draw(
-                currentFrame,
-                new Vector2(player.Position.X, yOffset), // Maintain consistent Y position
-                null, // No need for a source rectangle
-                Color.White,
-                0f,
-                Vector2.Zero,
-                1f,
-                spriteEffect,
-                0f
-            );
-
+            player.Draw(_spriteBatch);
+ 
             _spriteBatch.End();
 
             base.Draw(gameTime);
