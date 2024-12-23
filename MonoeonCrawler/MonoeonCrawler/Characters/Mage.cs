@@ -8,7 +8,7 @@ namespace MonoeonCrawler.Characters
         public Mage(ContentManager content)
             : base("Mage", "", maxHealth:100, physicalDamage: 0, magicDamage: 20, maxMana: 100, content)
         {
-            Texture = content.Load<Texture2D>("Heroes/Wizard/Idle/wizard-idle0");
+
         }
 
         public override void LevelUp()

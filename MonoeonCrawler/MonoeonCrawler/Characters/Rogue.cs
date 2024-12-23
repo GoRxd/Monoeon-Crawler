@@ -8,7 +8,7 @@ public class Rogue : Character
     public Rogue(ContentManager content)
         : base(name: "Rogue", description: "", maxHealth: 80, physicalDamage: 30, magicDamage: 10, maxMana: 75, content)
     {
-        Texture = content.Load<Texture2D>("Heroes/Rogue/Idle/rogue-idle0.png");
+
     }
 
     public override void LevelUp()

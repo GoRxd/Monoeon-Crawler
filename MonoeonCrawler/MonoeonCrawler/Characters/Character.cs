@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoeonCrawler.Abilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MonoeonCrawler.Characters
 {
@@ -10,7 +12,13 @@ namespace MonoeonCrawler.Characters
     {
         protected List<Ability> selectedAbilities;
 
-        public Texture2D Texture { get; protected set; }
+        private List<Texture2D> walkingFrames;
+        private List<Texture2D> idleFrames;
+        private double animationTimer;
+        private double frameTime = 0.1; // Time per frame in seconds
+        private int currentFrame;
+        private bool isWalking;
+
         protected ContentManager content;
 
         private int health;
@@ -55,9 +63,11 @@ namespace MonoeonCrawler.Characters
             return Math.Pow(Level / 0.07, 2);
         }
 
+
         public Character(string name, string description, int maxHealth, int physicalDamage, int magicDamage, int maxMana, ContentManager content)
         {
-            selectedAbilities = new List<Ability>();
+            walkingFrames = new List<Texture2D>();
+            idleFrames = new List<Texture2D>();
             this.content = content;
             Name = name;
             Description = description;
@@ -69,6 +79,56 @@ namespace MonoeonCrawler.Characters
             Mana = MaxMana;
             Experience = 0;
             MaxExperience = MaxExperienceFormula();
+
+            //// Load walking frames
+            //for (int i = 0; i < 6; i++) 
+            //{
+            //    walkingFrames.Add(content.Load<Texture2D>($"Heroes/{name}/Run/{name}-running-{i}"));
+            //}
+
+            // Load idle frames
+            for (int i = 0; i < 4; i++)
+            {
+                idleFrames.Add(content.Load<Texture2D>($"Heroes/{name}/Idle/{name}-idle-{i}"));
+            }
+        }
+
+        public void SetWalking(bool walking)
+        {
+            if (isWalking != walking)
+            {
+                isWalking = walking;
+                currentFrame = 0;
+                animationTimer = 0;
+            }
+        }
+
+
+        public void UpdateAnimation(GameTime gameTime)
+        {
+            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (animationTimer >= frameTime)
+            {
+                currentFrame++;
+                animationTimer -= frameTime;
+
+                // Loop animation frames
+                if (isWalking)
+                {
+                    currentFrame %= walkingFrames.Count;
+                }
+                else
+                {
+                    currentFrame %= idleFrames.Count;
+                }
+            }
+        }
+
+        public Texture2D GetCurrentFrame()
+        {
+            Debug.WriteLine(currentFrame);
+            return isWalking ? walkingFrames[currentFrame] : idleFrames[currentFrame];
         }
 
         public bool CanLevelUp()
