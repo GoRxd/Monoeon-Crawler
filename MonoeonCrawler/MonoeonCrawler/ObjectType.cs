@@ -10,5 +10,6 @@ namespace MonoeonCrawler
     {
         None,
         Obstacle,
+        Tile,
     }
 }

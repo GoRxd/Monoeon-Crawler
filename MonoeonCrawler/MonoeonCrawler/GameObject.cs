@@ -11,7 +11,7 @@ namespace MonoeonCrawler
         public string Name { get; private set; }
         public Vector2 Position { get; set; }
 
-        public ObjectType Type { get; private set; }
+        public ObjectType Type { get; protected set; }
 
         public GameObject(string name) : this(name, Vector2.Zero) { }
 
@@ -27,7 +27,7 @@ namespace MonoeonCrawler
 
         public virtual void OnCollision(GameObject objectB)
         {
-            Debug.WriteLine($"{Name} object has not implemented OnCollision.");
+            Debug.WriteLine($"{Name} object has not implemented OnCollision with {objectB.Name}.");
         }
     }
 

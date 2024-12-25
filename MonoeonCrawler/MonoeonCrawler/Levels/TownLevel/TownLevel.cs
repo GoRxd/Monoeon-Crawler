@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoeonCrawler.Levels.TestLevel
+namespace MonoeonCrawler.Levels.TownLevel
 {
-    public class TestLevel : Level
+    public class TownLevel : Level
     {
-        public TestLevel(Game1 game) : base(game)
+        public TownLevel(Game1 game, Player player) : base(game, player)
         {
-            rooms.Add(new TestRoom(game));
+            rooms.Add(new TownRoom(game, player));
             ChangeRoom(rooms[0]);
         }
     }

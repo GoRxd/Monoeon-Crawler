@@ -40,6 +40,11 @@ namespace MonoeonCrawler
             Root.AddToManagers(SystemManagers.Default, null);
             SceneManager = new SceneManager(this);
             SceneManager.ChangeScene(new MainMenuScene(this));
+            // Set the game to fullscreen
+            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -55,7 +60,6 @@ namespace MonoeonCrawler
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Debug.WriteLine(Root.Children.Count);
             MonoGameGum.GumService.Default.Update(this, gameTime, Root);
             SceneManager.Update(gameTime);
 
@@ -68,15 +72,11 @@ namespace MonoeonCrawler
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            SpriteBatch.Begin();
-
             //DrawGameObjects();
 
             //player.Draw(_spriteBatch);
             MonoGameGum.GumService.Default.Draw();
             SceneManager.Draw(gameTime);
-
-            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

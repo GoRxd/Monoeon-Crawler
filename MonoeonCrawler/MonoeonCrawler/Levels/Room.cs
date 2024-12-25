@@ -17,6 +17,7 @@ namespace MonoeonCrawler.Levels
         abstract public void Draw(GameTime gameTime);
 
         protected List<GameObject> gameObjects;
+        protected List<GameObject> floorTiles;
 
         protected Game1 game;
 
@@ -25,6 +26,7 @@ namespace MonoeonCrawler.Levels
         public Room(Game1 _game)
         {
             gameObjects = new();
+            floorTiles = new();
             game = _game;
             doors = new();
         }

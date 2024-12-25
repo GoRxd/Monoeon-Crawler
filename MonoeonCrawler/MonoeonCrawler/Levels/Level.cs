@@ -9,31 +9,28 @@ namespace MonoeonCrawler.Levels
 {
     public class Level
     {
-        protected Room currentRoom;
+        public Room CurrentRoom { get; protected set; }
         protected List<Room> rooms;
         protected Game1 game;
+        protected Player player;
 
-        public Level(Game1 _game)
+        public Level(Game1 _game, Player player)
         {
             game = _game;
+            this.player = player;
             rooms = new();
         }
 
         public void ChangeRoom(Room room)
         {
-            currentRoom?.Unload();
-            currentRoom = room;
-            currentRoom?.Load();
+            CurrentRoom?.Unload();
+            CurrentRoom = room;
+            CurrentRoom?.Load();
         }
 
         public void Update(GameTime gameTime)
         {
-            currentRoom?.Update(gameTime);
-        }
-
-        public void Draw(GameTime gameTime)
-        {
-            currentRoom?.Draw(gameTime);
+            CurrentRoom?.Update(gameTime);
         }
     }
 }

@@ -130,7 +130,6 @@ namespace MonoeonCrawler.Characters
 
         public Texture2D GetCurrentTexture()
         {
-            Debug.WriteLine(CurrentFrame);
             return isWalking ? WalkingTexture : IdleTexture;
         }
 

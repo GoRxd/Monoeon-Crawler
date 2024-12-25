@@ -27,5 +27,9 @@ namespace MonoeonCrawler.GameObjects
         {
             return Texture.Bounds;
         }
+        public override void OnCollision(GameObject objectB)
+        {
+            base.OnCollision(objectB);
+        }
     }
 }
