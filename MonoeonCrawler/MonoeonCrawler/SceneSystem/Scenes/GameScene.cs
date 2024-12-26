@@ -92,7 +92,6 @@ public class GameScene : IScene
         _game.SpriteBatch.Begin(transformMatrix: transformMatrix);
 
         currentLevel.CurrentRoom.Draw(gameTime);
-        player.Draw(_game.SpriteBatch);
 
         _game.SpriteBatch.End();
     }

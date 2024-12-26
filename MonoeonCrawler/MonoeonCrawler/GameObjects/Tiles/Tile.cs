@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 namespace MonoeonCrawler.GameObjects.Tiles
 {
     // Updated Tile class inheriting from GameObject
     public class Tile : GameObject
     {
         protected Texture2D texture;
+        public static readonly Vector2 Size = new Vector2(180, 180);
         public Tile(string name, Vector2 position) : base(name, position)
         {
             Type = ObjectType.Tile;

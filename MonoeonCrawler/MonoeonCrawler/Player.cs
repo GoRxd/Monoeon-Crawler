@@ -69,7 +69,7 @@ namespace MonoeonCrawler
         {
             if (objectB.Type == ObjectType.Obstacle)
             {
-                Debug.WriteLine("Collision Detected with: " + objectB.Name);
+                //Debug.WriteLine("Collision Detected with: " + objectB.Name);
 
                 Rectangle playerRect = GetRectangle();
                 Rectangle obstacleRect = objectB.GetRectangle();

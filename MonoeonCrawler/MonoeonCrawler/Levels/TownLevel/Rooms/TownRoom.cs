@@ -15,20 +15,42 @@ namespace MonoeonCrawler.Levels.TestLevel.Rooms
     public class TownRoom : Room
     {
         protected Player player;
-
         public TownRoom(Game1 _game, Player player) : base(_game)
         {
-            game = _game;
             this.player = player;
+
+            // Define a 2D array of tile IDs for this room
+            floorTileIDs = new List<List<int>>
+            {
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                new() { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+
+ 
+            };
         }
 
         public override void Draw(GameTime gameTime)
         {
-            // Draw floor tiles first
-            foreach (var tile in floorTiles)
-            {
-                tile.Draw(game.SpriteBatch);
-            }
+            DrawTiles();
 
             // Then draw regular game objects
             DrawGameObjects();
@@ -36,18 +58,14 @@ namespace MonoeonCrawler.Levels.TestLevel.Rooms
 
         public override void Load()
         {
-            // Example: Adding floor tiles (adjust positions as needed)
-            for (int x = 0; x < 10; x++)
-            {
-                for (int y = 0; y < 10; y++)
-                {
-                    //floorTiles.Add(new Tile($"Tile_{x}_{y}", new Vector2(x * 32, y * 32)));
-                }
-            }
+            // Load floor tiles with a starting position and tile size
+            LoadFloorTiles(Vector2.Zero); // Start position and tile dimensions
 
-            // Add other game objects
-            gameObjects.Add(player);
-            gameObjects.Add(new Table(new Vector2(300, 200), game.Content));
+            PlaceGameObjectOnTile(player, 0, 0);
+            Table testTable = new Table("Test table", game.Content);
+            int tableRow = floorTileIDs.Count - 1;
+            int tableCol = floorTileIDs[tableRow].Count - 1;
+            PlaceGameObjectOnTile(testTable, tableRow, tableCol);
         }
 
         public override void Unload()
@@ -60,11 +78,6 @@ namespace MonoeonCrawler.Levels.TestLevel.Rooms
         {
             HandleCollisions();
 
-            // Update floor tiles (if necessary)
-            foreach (var tile in floorTiles)
-            {
-                tile.OnCollision(null); // Dummy collision call if tiles need to handle updates
-            }
         }
     }
 

@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace MonoeonCrawler.GameObjects.Tiles
 {
-    public class GrassTile : Tile
+    public class BlankTile : Tile
     {
-        public GrassTile(Vector2 position, ContentManager content) : base("Grass Tile", position)
+        public BlankTile(Vector2 position, ContentManager content) : base("Blank Tile", position)
         {
-            texture = content.Load<Texture2D>("Environment/Green Woods/Assets/GrassTile");
+            texture = content.Load<Texture2D>("BlankTile");
+            Type = ObjectType.Obstacle;
         }
     }
 }

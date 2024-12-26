@@ -1,4 +1,5 @@
-﻿using MonoeonCrawler.Levels.TestLevel.Rooms;
+﻿using Microsoft.Xna.Framework;
+using MonoeonCrawler.Levels.TestLevel.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace MonoeonCrawler.Levels.TownLevel
         {
             rooms.Add(new TownRoom(game, player));
             ChangeRoom(rooms[0]);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
     }
 }

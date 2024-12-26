@@ -27,7 +27,10 @@ namespace MonoeonCrawler
 
         public virtual void OnCollision(GameObject objectB)
         {
-            Debug.WriteLine($"{Name} object has not implemented OnCollision with {objectB.Name}.");
+            if (objectB != null)
+            {
+                //Debug.WriteLine($"{Name} object has not implemented OnCollision with {objectB.Name}.");
+            }
         }
     }
 
